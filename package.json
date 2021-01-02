@@ -1,5 +1,5 @@
 {
-  "name": "eosjs-ecc",
+  "name": "@jafri/eosjs-ecc",
   "version": "4.0.8",
   "description": "Elliptic curve cryptography functions",
   "keywords": [

@@ -1,4 +1,4 @@
-const assert = require('assert');
+const {assert, assertEqual} = require('./assert');
 const ecurve = require('ecurve');
 const BigInteger = require('bigi');
 const secp256k1 = ecurve.getCurveByName('secp256k1');
@@ -26,8 +26,8 @@ function PublicKey(Q, pubkey_prefix = 'EOS') {
       return PublicKey(Q.Q)
     }
 
-    assert.equal(typeof Q, 'object', 'Invalid public key')
-    assert.equal(typeof Q.compressed, 'boolean', 'Invalid public key')
+    assertEqual(typeof Q, 'object', 'Invalid public key')
+    assertEqual(typeof Q.compressed, 'boolean', 'Invalid public key')
 
     function toBuffer(compressed = Q.compressed) {
         return Q.getEncoded(compressed);
@@ -65,7 +65,7 @@ function PublicKey(Q, pubkey_prefix = 'EOS') {
         console.error('Deprecated warning: PublicKey.child')
 
         assert(Buffer.isBuffer(offset), "Buffer required: offset")
-        assert.equal(offset.length, 32, "offset length")
+        assertEqual(offset.length, 32, "offset length")
 
         offset = Buffer.concat([ toBuffer(), offset ])
         offset = hash.sha256( offset )
@@ -147,7 +147,7 @@ PublicKey.fromString = function(public_key, pubkey_prefix = 'EOS') {
     @return PublicKey
 */
 PublicKey.fromStringOrThrow = function(public_key, pubkey_prefix = 'EOS') {
-    assert.equal(typeof public_key, 'string', 'public_key')
+    assertEqual(typeof public_key, 'string', 'public_key')
     const match = public_key.match(/^PUB_([A-Za-z0-9]+)_([A-Za-z0-9]+)$/)
     if(match === null) {
       // legacy
@@ -159,7 +159,7 @@ PublicKey.fromStringOrThrow = function(public_key, pubkey_prefix = 'EOS') {
     }
     assert(match.length === 3, 'Expecting public key like: PUB_K1_base58pubkey..')
     const [, keyType, keyString] = match
-    assert.equal(keyType, 'K1', 'K1 private key expected')
+    assertEqual(keyType, 'K1', 'K1 private key expected')
     return PublicKey.fromBuffer(keyUtils.checkDecode(keyString, keyType))
 }
 

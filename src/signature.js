@@ -1,7 +1,7 @@
 const ecdsa = require('./ecdsa');
 const hash = require('./hash');
 const curve = require('ecurve').getCurveByName('secp256k1');
-const assert = require('assert');
+const {assert, assertEqual} = require('./assert');
 const BigInteger = require('bigi');
 const keyUtils = require('./key_utils');
 const PublicKey = require('./key_public');
@@ -10,9 +10,9 @@ const PrivateKey = require('./key_private');
 module.exports = Signature
 
 function Signature(r, s, i) {
-    assert.equal(r != null, true, 'Missing parameter');
-    assert.equal(s != null, true, 'Missing parameter');
-    assert.equal(i != null, true, 'Missing parameter');
+    assertEqual(r != null, true, 'Missing parameter');
+    assertEqual(s != null, true, 'Missing parameter');
+    assertEqual(i != null, true, 'Missing parameter');
 
     /**
         Verify signed data.
@@ -227,9 +227,9 @@ Signature.signHash = function(dataSha256, privateKey, encoding = 'hex') {
 Signature.fromBuffer = function(buf) {
     var i, r, s;
     assert(Buffer.isBuffer(buf), 'Buffer is required')
-    assert.equal(buf.length, 65, 'Invalid signature length');
+    assertEqual(buf.length, 65, 'Invalid signature length');
     i = buf.readUInt8(0);
-    assert.equal(i - 27, i - 27 & 7, 'Invalid signature parameter');
+    assertEqual(i - 27, i - 27 & 7, 'Invalid signature parameter');
     r = BigInteger.fromBuffer(buf.slice(1, 33));
     s = BigInteger.fromBuffer(buf.slice(33));
     return Signature(r, s, i);
@@ -257,11 +257,11 @@ Signature.fromString = function(signature) {
     @return {Signature}
 */
 Signature.fromStringOrThrow = function(signature) {
-    assert.equal(typeof signature, 'string', 'signature')
+    assertEqual(typeof signature, 'string', 'signature')
     const match = signature.match(/^SIG_([A-Za-z0-9]+)_([A-Za-z0-9]+)$/)
     assert(match != null && match.length === 3, 'Expecting signature like: SIG_K1_base58signature..')
     const [, keyType, keyString] = match
-    assert.equal(keyType, 'K1', 'K1 signature expected')
+    assertEqual(keyType, 'K1', 'K1 signature expected')
     return Signature.fromBuffer(keyUtils.checkDecode(keyString, keyType))
 }
 

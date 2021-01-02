@@ -1,4 +1,4 @@
-var assert = require('assert') // from https://github.com/bitcoinjs/bitcoinjs-lib
+var {assert, assertEqual} = require('./assert') // from https://github.com/bitcoinjs/bitcoinjs-lib
 var enforceType = require('./enforce_types')
 
 var BigInteger = require('bigi')
@@ -52,11 +52,11 @@ function ECSignature(r, s) {
 
 // Import operations
 ECSignature.parseCompact = function(buffer) {
-  assert.equal(buffer.length, 65, 'Invalid signature length')
+  assertEqual(buffer.length, 65, 'Invalid signature length')
   var i = buffer.readUInt8(0) - 27
 
   // At most 3 bits
-  assert.equal(i, i & 7, 'Invalid signature parameter')
+  assertEqual(i, i & 7, 'Invalid signature parameter')
   var compressed = !!(i & 4)
 
   // Recovery param only
@@ -73,15 +73,15 @@ ECSignature.parseCompact = function(buffer) {
 }
 
 ECSignature.fromDER = function(buffer) {
-  assert.equal(buffer.readUInt8(0), 0x30, 'Not a DER sequence')
-  assert.equal(buffer.readUInt8(1), buffer.length - 2, 'Invalid sequence length')
-  assert.equal(buffer.readUInt8(2), 0x02, 'Expected a DER integer')
+  assertEqual(buffer.readUInt8(0), 0x30, 'Not a DER sequence')
+  assertEqual(buffer.readUInt8(1), buffer.length - 2, 'Invalid sequence length')
+  assertEqual(buffer.readUInt8(2), 0x02, 'Expected a DER integer')
 
   var rLen = buffer.readUInt8(3)
   assert(rLen > 0, 'R length is zero')
 
   var offset = 4 + rLen
-  assert.equal(buffer.readUInt8(offset), 0x02, 'Expected a DER integer (2)')
+  assertEqual(buffer.readUInt8(offset), 0x02, 'Expected a DER integer (2)')
 
   var sLen = buffer.readUInt8(offset + 1)
   assert(sLen > 0, 'S length is zero')
@@ -98,7 +98,7 @@ ECSignature.fromDER = function(buffer) {
     assert(sB.readUInt8(1) & 0x80, 'S value excessively padded')
   }
 
-  assert.equal(offset, buffer.length, 'Invalid DER encoding')
+  assertEqual(offset, buffer.length, 'Invalid DER encoding')
   var r = BigInteger.fromDERInteger(rB)
   var s = BigInteger.fromDERInteger(sB)
 

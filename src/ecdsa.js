@@ -1,4 +1,4 @@
-var assert = require('assert') // from github.com/bitcoinjs/bitcoinjs-lib from github.com/cryptocoinjs/ecdsa
+var {assert, assertEqual, assertStrictEqual} = require('./assert') // from github.com/bitcoinjs/bitcoinjs-lib from github.com/cryptocoinjs/ecdsa
 var crypto = require('./hash')
 var enforceType = require('./enforce_types')
 
@@ -16,7 +16,7 @@ function deterministicGenerateK(curve, hash, d, checkSig, nonce) {
   }
 
   // sanity check
-  assert.equal(hash.length, 32, 'Hash must be 256 bit')
+  assertEqual(hash.length, 32, 'Hash must be 256 bit')
 
   var x = d.toBuffer(32)
   var k = new Buffer(32)
@@ -145,7 +145,7 @@ function verify(curve, hash, signature, Q) {
   * http://www.secg.org/download/aid-780/sec1-v2.pdf
   */
 function recoverPubKey(curve, e, signature, i) {
-  assert.strictEqual(i & 3, i, 'Recovery param is more than two bits')
+  assertStrictEqual(i & 3, i, 'Recovery param is more than two bits')
 
   var n = curve.n
   var G = curve.G

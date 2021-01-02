@@ -2,7 +2,7 @@ const ecurve = require('ecurve');
 const Point = ecurve.Point;
 const secp256k1 = ecurve.getCurveByName('secp256k1');
 const BigInteger = require('bigi');
-const assert = require('assert');
+const {assert, assertEqual} = require('./assert');
 
 const hash = require('./hash');
 const PublicKey = require('./key_public');
@@ -135,14 +135,14 @@ function PrivateKey(d) {
 
 /** @private */
 function parseKey(privateStr) {
-  assert.equal(typeof privateStr, 'string', 'privateStr')
+  assertEqual(typeof privateStr, 'string', 'privateStr')
   const match = privateStr.match(/^PVT_([A-Za-z0-9]+)_([A-Za-z0-9]+)$/)
 
   if(match === null) {
     // legacy WIF - checksum includes the version
     const versionKey = keyUtils.checkDecode(privateStr, 'sha256x2')
     const version = versionKey.readUInt8(0);
-    assert.equal(0x80, version, `Expected version ${0x80}, instead got ${version}`)
+    assertEqual(0x80, version, `Expected version ${0x80}, instead got ${version}`)
     const privateKey = PrivateKey.fromBuffer(versionKey.slice(1))
     const keyType = 'K1'
     const format = 'WIF'
@@ -151,7 +151,7 @@ function parseKey(privateStr) {
 
   assert(match.length === 3, 'Expecting private key like: PVT_K1_base58privateKey..')
   const [, keyType, keyString] = match
-  assert.equal(keyType, 'K1', 'K1 private key expected')
+  assertEqual(keyType, 'K1', 'K1 private key expected')
   const privateKey = PrivateKey.fromBuffer(keyUtils.checkDecode(keyString, keyType))
   return {privateKey, format: 'PVT', keyType}
 }
@@ -286,15 +286,15 @@ function unitTest() {
   const pvt = PrivateKey(hash.sha256(''))
 
   const pvtError = 'key comparison test failed on a known private key'
-  assert.equal(pvt.toWif(), '5KYZdUEo39z3FPrtuX2QbbwGnNP5zTd7yyr2SC1j299sBCnWjss', pvtError)
-  assert.equal(pvt.toString(), '5KYZdUEo39z3FPrtuX2QbbwGnNP5zTd7yyr2SC1j299sBCnWjss', pvtError)
-  // assert.equal(pvt.toString(), 'PVT_K1_2jH3nnhxhR3zPUcsKaWWZC9ZmZAnKm3GAnFD1xynGJE1Znuvjd', pvtError)
+  assertEqual(pvt.toWif(), '5KYZdUEo39z3FPrtuX2QbbwGnNP5zTd7yyr2SC1j299sBCnWjss', pvtError)
+  assertEqual(pvt.toString(), '5KYZdUEo39z3FPrtuX2QbbwGnNP5zTd7yyr2SC1j299sBCnWjss', pvtError)
+  // assertEqual(pvt.toString(), 'PVT_K1_2jH3nnhxhR3zPUcsKaWWZC9ZmZAnKm3GAnFD1xynGJE1Znuvjd', pvtError)
 
   const pub = pvt.toPublic()
   const pubError = 'pubkey string comparison test failed on a known public key'
-  assert.equal(pub.toString(), 'EOS859gxfnXyUriMgUeThh1fWv3oqcpLFyHa3TfFYC4PK2HqhToVM', pubError)
-  // assert.equal(pub.toString(), 'PUB_K1_859gxfnXyUriMgUeThh1fWv3oqcpLFyHa3TfFYC4PK2Ht7beeX', pubError)
-  // assert.equal(pub.toStringLegacy(), 'EOS859gxfnXyUriMgUeThh1fWv3oqcpLFyHa3TfFYC4PK2HqhToVM', pubError)
+  assertEqual(pub.toString(), 'EOS859gxfnXyUriMgUeThh1fWv3oqcpLFyHa3TfFYC4PK2HqhToVM', pubError)
+  // assertEqual(pub.toString(), 'PUB_K1_859gxfnXyUriMgUeThh1fWv3oqcpLFyHa3TfFYC4PK2Ht7beeX', pubError)
+  // assertEqual(pub.toStringLegacy(), 'EOS859gxfnXyUriMgUeThh1fWv3oqcpLFyHa3TfFYC4PK2HqhToVM', pubError)
 
   doesNotThrow(() => PrivateKey.fromString(pvt.toWif()), 'converting known wif from string')
   doesNotThrow(() => PrivateKey.fromString(pvt.toString()), 'converting known pvt from string')
