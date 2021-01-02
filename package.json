@@ -1,6 +1,6 @@
 {
   "name": "@jafri/eosjs-ecc",
-  "version": "4.0.9",
+  "version": "4.0.10",
   "description": "Elliptic curve cryptography functions",
   "keywords": [
     "ECC",
@@ -38,13 +38,13 @@
   },
   "dependencies": {
     "@babel/runtime": "7.6.0",
+    "@jafri/ecurve": "^1.0.6",
     "bigi": "1.4.2",
     "browserify-aes": "1.0.6",
     "bs58": "4.0.1",
     "bytebuffer": "5.0.1",
     "create-hash": "1.1.3",
     "create-hmac": "1.1.6",
-    "ecurve": "1.0.5",
     "randombytes": "2.0.5"
   },
   "license": "MIT",
