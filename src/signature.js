@@ -1,13 +1,12 @@
-const ecdsa = require('./ecdsa');
-const hash = require('./hash');
-const curve = require('ecurve').getCurveByName('secp256k1');
-const {assert, assertEqual} = require('./assert');
-const BigInteger = require('bigi');
-const keyUtils = require('./key_utils');
-const PublicKey = require('./key_public');
-const PrivateKey = require('./key_private');
-
-module.exports = Signature
+import ecdsa from './ecdsa'
+import hash from './hash'
+import { getCurveByName } from '@jafri/ecurve'
+const curve = getCurveByName('secp256k1');
+import {assert, assertEqual} from './assert'
+import BigInteger from 'bigi'
+import keyUtils from './key_utils'
+import PublicKey from './key_public'
+import PrivateKey from './key_private'
 
 function Signature(r, s, i) {
     assertEqual(r != null, true, 'Missing parameter');
@@ -282,3 +281,5 @@ Signature.from = (o) => {
     }
     return signature
 }
+
+export default Signature

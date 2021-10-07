@@ -1,17 +1,10 @@
-const randomBytes = require('randombytes')
-const ByteBuffer = require('bytebuffer')
-const crypto = require('browserify-aes')
-const assert = require('./assert')
-const PublicKey = require('./key_public')
-const PrivateKey = require('./key_private')
-const hash = require('./hash')
-
-const Long = ByteBuffer.Long;
-
-module.exports = {
-  encrypt,
-  decrypt
-}
+import randomBytes from 'randombytes'
+import { Long } from 'bytebuffer'
+import crypto from 'browserify-aes'
+import assert from './assert'
+import PublicKey from './key_public'
+import PrivateKey from './key_private'
+import hash from './hash'
 
 /**
     Spec: http://localhost:3002/steem/@dantheman/how-to-encrypt-a-memo-when-transferring-steem
@@ -27,7 +20,7 @@ module.exports = {
     @property {Buffer} message - Plain text message
     @property {number} checksum - shared secret checksum
 */
-function encrypt(private_key, public_key, message, nonce = uniqueNonce()) {
+export function encrypt(private_key, public_key, message, nonce = uniqueNonce()) {
     return crypt(private_key, public_key, nonce, message)
 }
 
@@ -44,7 +37,7 @@ function encrypt(private_key, public_key, message, nonce = uniqueNonce()) {
 
     @return {Buffer} - message
 */
-function decrypt(private_key, public_key, nonce, message, checksum) {
+export function decrypt(private_key, public_key, nonce, message, checksum) {
     return crypt(private_key, public_key, nonce, message, checksum).message
 }
 

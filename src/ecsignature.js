@@ -1,7 +1,6 @@
-var {assert, assertEqual} = require('./assert') // from https://github.com/bitcoinjs/bitcoinjs-lib
-var enforceType = require('./enforce_types')
-
-var BigInteger = require('bigi')
+import {assert, assertEqual} from './assert'
+import enforceType from './enforce_types'
+import BigInteger from 'bigi'
 
 function ECSignature(r, s) {
   enforceType(BigInteger, r)
@@ -121,4 +120,4 @@ ECSignature.parseScriptSignature = function(buffer) {
   }
 }
 
-module.exports = ECSignature
+export default ECSignature

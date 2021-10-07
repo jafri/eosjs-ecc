@@ -1,19 +1,16 @@
-const ecurve = require('ecurve');
-const Point = ecurve.Point;
-const secp256k1 = ecurve.getCurveByName('secp256k1');
-const BigInteger = require('bigi');
-const {assert, assertEqual} = require('./assert');
+import { Point, getCurveByName } from '@jafri/ecurve'
+const secp256k1 = getCurveByName('secp256k1')
+import BigInteger from 'bigi'
+import {assert, assertEqual} from './assert'
 
-const hash = require('./hash');
-const PublicKey = require('./key_public');
-const keyUtils = require('./key_utils');
-const createHash = require('create-hash')
-const promiseAsync = require('./promise-async')
+import hash from './hash'
+import PublicKey from './key_public'
+import keyUtils from './key_utils'
+import createHash from 'create-hash'
+import promiseAsync from './promise-async'
 
 const G = secp256k1.G
 const n = secp256k1.n
-
-module.exports = PrivateKey;
 
 /**
   @typedef {string} wif - https://en.bitcoin.it/wiki/Wallet_import_format
@@ -313,3 +310,5 @@ const doesNotThrow = (cb, msg) => {
     throw error
   }
 }
+
+export default PrivateKey;

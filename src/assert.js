@@ -1,4 +1,4 @@
-const assert = (isTrue, error) => {
+export const assert = (isTrue, error) => {
     if (isTrue) {
         return
     } else {
@@ -6,7 +6,7 @@ const assert = (isTrue, error) => {
     }
 }
 
-const assertEqual = (item1, item2, error) => {
+export const assertEqual = (item1, item2, error) => {
     if (item1 == item2) {
         return
     } else {
@@ -14,16 +14,10 @@ const assertEqual = (item1, item2, error) => {
     }
 }
 
-const assertStrictEqual = (item1, item2, error) => {
+export const assertStrictEqual = (item1, item2, error) => {
     if (item1 === item2) {
         return
     } else {
         throw new Error(error)
     }
-}
-
-module.exports = {
-    assert,
-    assertEqual,
-    assertStrictEqual
 }

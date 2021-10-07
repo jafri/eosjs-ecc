@@ -1,0 +1,12 @@
+{
+  "imports": {
+    "@jafri/ecurve": "./@jafri/ecurve.js",
+    "bigi": "./bigi.js",
+    "browserify-aes": "./browserify-aes.js",
+    "bs58": "./bs58.js",
+    "bytebuffer": "./bytebuffer.js",
+    "create-hash": "./create-hash.js",
+    "create-hmac": "./create-hmac.js",
+    "randombytes": "./randombytes.js"
+  }
+}

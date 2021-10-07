@@ -1,9 +1,7 @@
-const Aes = require("./aes")
-const PrivateKey = require("./key_private")
-const PublicKey = require("./key_public")
-const Signature = require("./signature")
-const key_utils = require("./key_utils")
-const hash = require("./hash")
+import PrivateKey from "./key_private"
+import PublicKey from "./key_public"
+import Signature from "./signature"
+import hash from "./hash"
 
 /**
     [Wallet Import Format](https://en.bitcoin.it/wiki/Wallet_import_format)
@@ -199,4 +197,4 @@ ecc.randomKey().then(privateKey => {
     sha256: (data, resultEncoding = 'hex') => hash.sha256(data, resultEncoding)
 }
 
-module.exports = ecc
+export default ecc

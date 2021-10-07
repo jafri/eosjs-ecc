@@ -8,7 +8,7 @@
 
   @example promiseAsync(myfunction)
 */
-module.exports = func => (
+export default func => (
   (...args) => (
     new Promise((resolve, reject) => {
       setTimeout(() => {

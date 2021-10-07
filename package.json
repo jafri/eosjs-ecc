@@ -18,11 +18,12 @@
     "lib"
   ],
   "scripts": {
+    "build": "snowpack build --polyfill-node",
     "test": "mocha --use_strict src/*.test.js",
     "test_lib": "mocha --use_strict lib/*.test.js",
     "coverage": "nyc --reporter=lcov --reporter=text npm test",
     "coveralls": "yarn coverage && cat ./coverage/lcov.info | ./node_modules/.bin/coveralls",
-    "build": "yarn build_lib && yarn build_browser",
+    "build2": "yarn build_lib && yarn build_browser",
     "build_lib": "rm -f lib/* && babel src --out-dir lib",
     "build_browser": "mkdir -p lib && browserify -o lib/eosjs-ecc.js -s eosjs_ecc lib/index.js",
     "build_browser_test": "yarn build && browserify -o dist/test.js lib/*.test.js",
@@ -58,6 +59,7 @@
     "documentation": "^12.1.4",
     "mocha": "^5.2.0",
     "nyc": "^14.1.0",
+    "snowpack": "^2.18.5",
     "terser": "^3.17.0"
   },
   "nyc": {

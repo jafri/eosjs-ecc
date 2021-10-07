@@ -1,15 +1,13 @@
-const {assert, assertEqual} = require('./assert');
-const ecurve = require('ecurve');
-const BigInteger = require('bigi');
-const secp256k1 = ecurve.getCurveByName('secp256k1');
+import {assert, assertEqual} from './assert'
+import { Point, getCurveByName } from '@jafri/ecurve'
+import BigInteger from 'bigi'
+const secp256k1 = getCurveByName('secp256k1');
 
-const hash = require('./hash');
-const keyUtils = require('./key_utils');
+import hash from './hash'
+import keyUtils from './key_utils'
 
 var G = secp256k1.G
 var n = secp256k1.n
-
-module.exports = PublicKey
 
 /**
   @param {string|Buffer|PublicKey|ecurve.Point} public key
@@ -170,3 +168,6 @@ PublicKey.fromHex = function(hex) {
 PublicKey.fromStringHex = function(hex) {
     return PublicKey.fromString(new Buffer(hex, 'hex'));
 }
+
+
+export default PublicKey

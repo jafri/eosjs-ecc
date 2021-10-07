@@ -1,17 +1,8 @@
-const base58 = require('bs58')
-const assert = require('assert')
-const randomBytes = require('randombytes');
+import base58 from 'bs58'
+import {assert, assertEqual} from './assert'
+import randomBytes from 'randombytes'
 
-const hash = require('./hash');
-
-module.exports = {
-    random32ByteBuffer,
-    addEntropy,
-    cpuEntropy,
-    entropyCount: () => entropyCount,
-    checkDecode,
-    checkEncode
-}
+import hash from './hash'
 
 let entropyPos = 0, entropyCount = 0
 
@@ -30,8 +21,8 @@ const externalEntropyArray = randomBytes(101)
     @return a random buffer obtained from the secure random number generator.  Additional entropy is used.
 */
 function random32ByteBuffer({cpuEntropyBits = 0, safe = true} = {}) {
-    assert.equal(typeof cpuEntropyBits, 'number', 'cpuEntropyBits')
-    assert.equal(typeof safe, 'boolean', 'boolean')
+    assertEqual(typeof cpuEntropyBits, 'number', 'cpuEntropyBits')
+    assertEqual(typeof safe, 'boolean', 'boolean')
 
     if(safe) {
       assert(entropyCount >= 128, 'Call initialize() to add entropy')
@@ -70,7 +61,7 @@ function random32ByteBuffer({cpuEntropyBits = 0, safe = true} = {}) {
     </code>
 */
 function addEntropy(...ints) {
-    assert.equal(externalEntropyArray.length, 101, 'externalEntropyArray')
+    assertEqual(externalEntropyArray.length, 101, 'externalEntropyArray')
 
     entropyCount += ints.length
     for(const i of ints) {
@@ -222,4 +213,13 @@ function checkDecode(keyString, keyType = null) {
     }
 
     return key
+}
+
+export default {
+    random32ByteBuffer,
+    addEntropy,
+    cpuEntropy,
+    entropyCount: () => entropyCount,
+    checkDecode,
+    checkEncode
 }

@@ -3,4 +3,4 @@ const objectApi = require('./api_object')
 
 const ecc = Object.assign({}, commonApi, objectApi)
 
-module.exports = ecc
+export default ecc

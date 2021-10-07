@@ -1,12 +1,12 @@
-var {assert, assertEqual, assertStrictEqual} = require('./assert') // from github.com/bitcoinjs/bitcoinjs-lib from github.com/cryptocoinjs/ecdsa
-var crypto = require('./hash')
-var enforceType = require('./enforce_types')
+import {assert, assertEqual, assertStrictEqual} from './assert'
+import crypto from './hash'
+import enforceType from './enforce_types'
 
-var BigInteger = require('bigi')
-var ECSignature = require('./ecsignature')
+import BigInteger from 'bigi'
+import ECSignature from './ecsignature'
 
 // https://tools.ietf.org/html/rfc6979#section-3.2
-function deterministicGenerateK(curve, hash, d, checkSig, nonce) {
+export function deterministicGenerateK(curve, hash, d, checkSig, nonce) {
   
   enforceType('Buffer', hash)
   enforceType(BigInteger, d)
@@ -62,7 +62,7 @@ function deterministicGenerateK(curve, hash, d, checkSig, nonce) {
 
 }
 
-function sign(curve, hash, d, nonce) {
+export function sign(curve, hash, d, nonce) {
   
   var e = BigInteger.fromBuffer(hash)
   var n = curve.n
@@ -94,7 +94,7 @@ function sign(curve, hash, d, nonce) {
   return ECSignature(r, s)
 }
 
-function verifyRaw(curve, e, signature, Q) {
+export function verifyRaw(curve, e, signature, Q) {
   var n = curve.n
   var G = curve.G
 
@@ -129,7 +129,7 @@ function verifyRaw(curve, e, signature, Q) {
   return v.equals(r)
 }
 
-function verify(curve, hash, signature, Q) {
+export function verify(curve, hash, signature, Q) {
   // 1.4.2 H = Hash(M), already done by the user
   // 1.4.3 e = H
   var e = BigInteger.fromBuffer(hash)
@@ -144,7 +144,7 @@ function verify(curve, hash, signature, Q) {
   *
   * http://www.secg.org/download/aid-780/sec1-v2.pdf
   */
-function recoverPubKey(curve, e, signature, i) {
+export function recoverPubKey(curve, e, signature, i) {
   assertStrictEqual(i & 3, i, 'Recovery param is more than two bits')
 
   var n = curve.n
@@ -195,7 +195,7 @@ function recoverPubKey(curve, e, signature, i) {
   * This function simply tries all four cases and returns the value
   * that resulted in a successful pubkey recovery.
   */
-function calcPubKeyRecoveryParam(curve, e, signature, Q) {
+export function calcPubKeyRecoveryParam(curve, e, signature, Q) {
   for (var i = 0; i < 4; i++) {
     var Qprime = recoverPubKey(curve, e, signature, i)
 
@@ -206,13 +206,4 @@ function calcPubKeyRecoveryParam(curve, e, signature, Q) {
   }
 
   throw new Error('Unable to find valid recovery factor')
-}
-
-module.exports = {
-  calcPubKeyRecoveryParam: calcPubKeyRecoveryParam,
-  deterministicGenerateK: deterministicGenerateK,
-  recoverPubKey: recoverPubKey,
-  sign: sign,
-  verify: verify,
-  verifyRaw: verifyRaw
 }
